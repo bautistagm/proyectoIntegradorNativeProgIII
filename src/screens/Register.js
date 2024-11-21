@@ -60,6 +60,8 @@ export default class Register extends Component {
         >
           <Text>Ir al Login</Text>
         </TouchableOpacity>
+
+
       </View>
     );
   }

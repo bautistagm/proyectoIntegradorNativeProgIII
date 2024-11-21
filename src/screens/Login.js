@@ -1,29 +1,64 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-//import {auth} from '../firebase/config'
+import {auth} from '../firebase/config'
 
 export default class Login extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      email: "",
-      password: "",
-      logedIn: false,
-      error: ''
+  constructor() {
+      super()
+      this.state = {
+          email: '',
+          password: '',
+          error:'',
+      }
+  }
+  login(){
+
+    const {email,password} = this.state;
+
+    if (email === ''){
+        this.setState({
+            error:'El mail es obligatorio!'
+        })
+    }  else if (password === ''){
+        this.setState({
+            error:'La contraseña es obligatoria!'
+        })
+    } else {
+        auth.signInWithEmailAndPassword(email, password)
+        .then( response => {
+            console.log('Login exitoso', response);
+
+            this.setState({
+                email: '',
+                password: '',
+                error: ''
+            });
+
+            //redigirimos al home si tood esta bien
+            this.props.navigation.navigate('Home');
+
+        })
+        .catch(error => {
+          console.log('error de login:',error.message), 
+          this.setState({
+                error: error.message
+            });
+        })
     }
+
+}
+
+  componentDidMount(){  //falta pulirlo, Redirigir al usuario a la home del sitio.
+       auth.onAuthStateChanged( user => {
+          if(user){
+            console.log("Usuario logueado:", user)
+              this.props.navigation.navigate('Home')
+          }
+          console.log(user)
+      })
   }
 
-  onSubmit = () => {
-    console.log("Email: ", this.state.email)
-    console.log("Password: ", this.state.password)
-    //auth.signInWithEmailAndPassword(this.state.email, this.state.password)
-    .then(response => {this.setState({logedIn: true})})
-    .catch(error => {this.setState({error:"Fallo el login"})})
-  }
-
-  componentDidMount(){
-   // auth.onAuthStateChanged(user=> console.log('El usuario es',user))
-  }
+  
 
   render() {
     return (
@@ -47,17 +82,20 @@ export default class Login extends Component {
           style={styles.input}
         />
 
-        <TouchableOpacity onPress={() => this.onSubmit()} style={styles.button}>
+        {this.state.error ? <Text style={styles.errorText}>{this.state.error}</Text> : null}  
+
+        <TouchableOpacity onPress={() => this.login()} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
-          <Text>Ir a Register</Text>
+          <Text style={styles.linkText}>¿Todavia no tenes cuenta? Registrate aca!</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
-          <Text>Ir a Home</Text>
+          <Text style={styles.linkText}>Home</Text>
         </TouchableOpacity>
+
       </View>
     );
   }
@@ -97,7 +135,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
-  dataContainer: {
-    marginTop: 20,
-  }
+  linkText: {
+    marginTop: 10,
+    color: '#007bff',
+    textAlign: 'center',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
 });

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'; 
-
-
-
+import { auth } from '../firebase/config';
 
 
 
@@ -10,6 +8,38 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 
 export default class Home extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      posts: [],
+      loading:true,
+    };
+  }
+
+ /* componentDidMount() {  //esto para verificar q este logueado, WIP
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        this.props.navigation.navigate('Login'); 
+      }else{
+        this.fetchPosts();
+      }
+    });
+  } */
+
+  fetchPosts = () => {
+    db.collection('posts')
+      .orderBy('createdAt', 'desc') // fechas ordenado
+      .onSnapshot((snapshot) => {
+        let posts = [];
+        snapshot.forEach((doc) => {
+          posts.push({ id: doc.id, ...doc.data() });
+        });
+        this.setState({ posts, loading: false });
+      });
+  };
+
+
 
   render(){
   return (
