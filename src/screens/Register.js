@@ -22,8 +22,7 @@ export default class Register extends Component {
 
   handleSubmit() {
     console.log(this.state.email, this.state.password);
-    auth
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+    auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((response) => this.setState({ registered: true }))
       .catch((error) => console.log({ error: "Fallo el registro" }));
   }
