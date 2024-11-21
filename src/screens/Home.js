@@ -49,6 +49,10 @@ export default class Home extends Component {
       <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Login')}>
         <Text style={styles.buttonText}>Ir a login</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => auth.signOut()}>
+          <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -79,5 +83,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
-  }
+  },
+
 });
