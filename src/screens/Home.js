@@ -1,17 +1,30 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'; // Usamos react-native en vez de react-native-web
+import React, { Component } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'; 
 
-export default function Home() {
+
+
+
+
+
+
+
+
+export default class Home extends Component {
+
+  render(){
   return (
     <View style={styles.container}>
       <Text style={styles.title}>¡Bienvenido a la aplicación!</Text>
       
-      <TouchableOpacity style={styles.button} onPress={() => alert('Botón presionado')}>
-        <Text style={styles.buttonText}>Toca el boton</Text>
+      <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Login')}>
+        <Text style={styles.buttonText}>Ir a login</Text>
       </TouchableOpacity>
     </View>
   );
 }
+}
+
+
 
 const styles = StyleSheet.create({
   container: {
