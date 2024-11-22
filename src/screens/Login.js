@@ -35,7 +35,7 @@ export default class Login extends Component {
             });
 
             //redigirimos al home si tood esta bien
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate('Tabnav');
 
         })
         .catch(error => {
@@ -52,7 +52,7 @@ export default class Login extends Component {
        auth.onAuthStateChanged( user => {
           if(user){
             console.log("Usuario logueado:", user)
-              this.props.navigation.navigate('Home')
+              this.props.navigation.navigate('Tabnav')
           }
           console.log(user)
       })

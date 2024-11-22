@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { auth } from '../firebase/config';
-
+import { auth,db } from '../firebase/config';
+import { FlatList } from 'react-native-web';
+import Post from '../components/Post';
 
 
 
@@ -17,55 +18,33 @@ export default class Home extends Component {
     };
   }
 
-  /* componentDidMount() {  //esto para verificar q este logueado, WIP
-     auth.onAuthStateChanged((user) => {
-       if (!user) {
-         this.props.navigation.navigate('Login'); 
-       }else{
-         this.fetchPosts();
-       }
-     });
-   } */
-
-  fetchPosts = () => {
+  
+  componentDidMount() {
     db.collection('posts')
-      .orderBy('createdAt', 'desc') // fechas ordenado
-      .onSnapshot((snapshot) => {
-        let posts = [];
-        snapshot.forEach((doc) => {
-          posts.push({ id: doc.id, ...doc.data() });
-        });
-        this.setState({ posts, loading: false });
+    .orderBy('createdAt', 'desc') // fechas ordenado
+    .onSnapshot((snapshot) => {
+      let posts = [];
+      snapshot.forEach((doc) => {
+        posts.push({ id: doc.id, data:doc.data() });
       });
-  };
-
+      this.setState({ posts, loading: false });
+    });
+  }
 
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>¡Bienvenido a la aplicación!</Text>
+        
 
-        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Login')}>
-          <Text style={styles.buttonText}>Ir a login</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            auth.signOut()
-              .then(() => {
-                console.log("Usuario deslogueado");
-                this.props.navigation.navigate('Login');
-              })
-              .catch(error => console.log("Error al desloguear:", error));
-          }}>
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Buscador')}>
-          <Text style={styles.buttonText}>Buscador</Text>
-        </TouchableOpacity>
+        <FlatList 
+        data = {this.state.posts}
+        keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <Post datos={item} />
+          )}
+        
+        />
 
       
       </View>

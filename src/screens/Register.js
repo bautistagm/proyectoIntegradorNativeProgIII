@@ -30,6 +30,7 @@ export default class Register extends Component {
         pass: contrasenia,
         createdAt: Date.now(),
       })
+      .then(this.props.navigation.navigate("Login"))
       )
       .catch((error) => console.log({ error: "Fallo el registro" }));
   }

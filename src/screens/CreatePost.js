@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-import { auth, firestore } from "../firebase/config";
+import { auth, firestore, db } from "../firebase/config";
 
 export default class CreatePost extends Component {
   constructor(props) {
@@ -30,20 +30,19 @@ export default class CreatePost extends Component {
       return;
     }
 
-    const userEmail = auth.currentUser?.email;
+    const userEmail = auth.currentUser.email;
       
-    firestore
-      .collection("posts")
+    db.collection("posts")
       .add({
         description: description,
-        createdAt: new Date(),
+        createdAt: Date.now(),
         userEmail: userEmail,
         likes: [],
       })
       .then(() => {
         this.setState({ description: "", error: "" });
         alert("¡Post creado con éxito!");
-        this.props.navigation.goBack();
+        this.props.navigation.navigate("Home");
       })
       .catch((error) => {
         console.error(error);
@@ -71,12 +70,7 @@ export default class CreatePost extends Component {
         >
           <Text style={styles.buttonText}>Publicar</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
-          style={styles.secondaryButton}
-        >
-          <Text style={styles.secondaryButtonText}>Cancelar</Text>
-        </TouchableOpacity>
+        
       </View>
     );
   }
