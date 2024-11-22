@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'; 
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { auth } from '../firebase/config';
 
 
@@ -9,23 +9,23 @@ import { auth } from '../firebase/config';
 
 export default class Home extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       posts: [],
-      loading:true,
+      loading: true,
     };
   }
 
- /* componentDidMount() {  //esto para verificar q este logueado, WIP
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        this.props.navigation.navigate('Login'); 
-      }else{
-        this.fetchPosts();
-      }
-    });
-  } */
+  /* componentDidMount() {  //esto para verificar q este logueado, WIP
+     auth.onAuthStateChanged((user) => {
+       if (!user) {
+         this.props.navigation.navigate('Login'); 
+       }else{
+         this.fetchPosts();
+       }
+     });
+   } */
 
   fetchPosts = () => {
     db.collection('posts')
@@ -41,21 +41,36 @@ export default class Home extends Component {
 
 
 
-  render(){
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>¡Bienvenido a la aplicación!</Text>
-      
-      <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Login')}>
-        <Text style={styles.buttonText}>Ir a login</Text>
-      </TouchableOpacity>
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>¡Bienvenido a la aplicación!</Text>
 
-      <TouchableOpacity style={styles.button} onPress={() => auth.signOut()}>
+        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={styles.buttonText}>Ir a login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            auth.signOut()
+              .then(() => {
+                console.log("Usuario deslogueado");
+                this.props.navigation.navigate('Login');
+              })
+              .catch(error => console.log("Error al desloguear:", error));
+          }}>
           <Text style={styles.buttonText}>Logout</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Buscador')}>
+          <Text style={styles.buttonText}>Buscador</Text>
+        </TouchableOpacity>
+
+      
+      </View>
+    );
+  }
 }
 
 
@@ -78,11 +93,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
+    marginTop:10
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+    
   },
 
 });
