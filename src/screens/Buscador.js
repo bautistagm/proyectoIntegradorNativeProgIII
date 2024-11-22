@@ -1,6 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { auth } from "../firebase/config";
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { auth, db } from "../firebase/config";
 
 export default class Buscador extends Component {
   constructor() {
@@ -12,57 +19,54 @@ export default class Buscador extends Component {
     };
   }
 
-  handleSearch(text) {
-    this.setState({ search: text, error: "" });
-
-    if (text.trim() === "") { //usamos trim para eliminar los espacios en cadena de texto
-      this.setState({ results: [] });
-      return;
-    }
-
-   
-    auth
-      .collection("users") 
-      .get()
-      .then((snapshot) => {
-        let results = [];
-        snapshot.forEach((doc) => {
-          const userData = doc.data();
-          if (userData.email && userData.email.includes(text)) {
-            results.push(userData);
-          }
-        });
-
-        if (results.length === 0) {
-          this.setState({ results: [], error: "El email no existe" });
-        } else {
-          this.setState({ results });
-        }
+  componentDidMount() {
+    db.collection("Usuarios").onSnapshot((snapshot) => {
+      let array = []
+      snapshot.forEach((doc) => {
+        array.push({
+          id: doc.id,
+          datos: doc.data(),
+        })
       })
-      .catch((error) => console.log("Error buscando usuarios:", error));
+      this.setState({
+        results: array,
+      })
+
+    })
+  }
+
+  filtrarUsuarios() {
+    return(
+      this.state.results.filter((usuario) => {
+        return usuario.datos.user.toLowerCase().includes(this.state.search.toLowerCase())
+      })
+    )
   }
 
   render() {
+    
+    const filtrado = this.filtrarUsuarios()
+
     return (
       <View style={styles.container}>
         <TextInput
           style={styles.input}
           placeholder="Buscar por email"
           value={this.state.search}
-          onChangeText={(text) => this.handleSearch(text)}
+          onChangeText={(text) => this.setState({ search: text })}
         />
 
-        {this.state.error ? <Text style={styles.errorText}>{this.state.error}</Text> : null}
-
-        <FlatList
-          data={this.state.results}
+        {filtrado.length === 0 ? (<Text>No se encontraron resultados</Text>): 
+        
+        (<FlatList 
+          data = {filtrado}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <View style={styles.resultItem}>
-              <Text style={styles.resultText}>{item.email}</Text>
-            </View>
+            <Text>{item.datos.user}</Text>
           )}
-        />
+        />)
+
+        }
       </View>
     );
   }

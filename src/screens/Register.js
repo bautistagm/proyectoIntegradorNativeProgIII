@@ -6,7 +6,7 @@ import {
   TextInput,
   StyleSheet,
 } from "react-native";
-import { auth } from "../firebase/config";
+import { auth, db } from "../firebase/config";
 
 export default class Register extends Component {
   constructor(props) {
@@ -20,10 +20,17 @@ export default class Register extends Component {
     };
   }
 
-  handleSubmit() {
+  handleSubmit(nombre, mail, contrasenia) {
     console.log(this.state.email, this.state.password);
-    auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((response) => this.setState({ registered: true }))
+    auth.createUserWithEmailAndPassword(mail, contrasenia)
+      .then((response) => 
+      db.collection('Usuarios').add({
+        owner: auth.currentUser.email,
+        user: nombre,
+        pass: contrasenia,
+        createdAt: Date.now(),
+      })
+      )
       .catch((error) => console.log({ error: "Fallo el registro" }));
   }
 
@@ -50,8 +57,8 @@ export default class Register extends Component {
           onChangeText={(text) => this.setState({ password: text })}
           value={this.state.password}
         />
-        <TouchableOpacity onPress={() => this.handleSubmit()}>
-          <Text>Acceder</Text>
+        <TouchableOpacity onPress={() => this.handleSubmit(this.state.userName, this.state.email, this.state.password)}>
+          <Text>Registrarse</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Login")}
