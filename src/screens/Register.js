@@ -22,15 +22,18 @@ export default class Register extends Component {
 
   handleSubmit(nombre, mail, contrasenia) {
     console.log(this.state.email, this.state.password);
-    auth.createUserWithEmailAndPassword(mail, contrasenia)
-      .then((response) => 
-      db.collection('Usuarios').add({
-        owner: auth.currentUser.email,
-        user: nombre,
-        pass: contrasenia,
-        createdAt: Date.now(),
-      })
-      .then(this.props.navigation.navigate("Login"))
+    auth
+      .createUserWithEmailAndPassword(mail, contrasenia)
+      .then((response) =>
+        db
+          .collection("Usuarios")
+          .add({
+            owner: auth.currentUser.email,
+            user: nombre,
+            pass: contrasenia,
+            createdAt: Date.now(),
+          })
+          .then(this.props.navigation.navigate("Login"))
       )
       .catch((error) => console.log({ error: "Fallo el registro" }));
   }
@@ -44,12 +47,14 @@ export default class Register extends Component {
           placeholder="Ingrese su usuario"
           onChangeText={(text) => this.setState({ userName: text })}
           value={this.state.userName}
+          style={styles.input}
         />
         <TextInput
           keyboardType="email address"
           placeholder="Ingrese su email"
           onChangeText={(text) => this.setState({ email: text })}
           value={this.state.email}
+          style={styles.input}
         />
         <TextInput
           keyboardType="Ingrese su contrasena"
@@ -57,18 +62,26 @@ export default class Register extends Component {
           secureTextEntry={true}
           onChangeText={(text) => this.setState({ password: text })}
           value={this.state.password}
+          style={styles.input}
         />
-        <TouchableOpacity onPress={() => this.handleSubmit(this.state.userName, this.state.email, this.state.password)}>
-          <Text>Registrarse</Text>
+        <TouchableOpacity
+          onPress={() =>
+            this.handleSubmit(
+              this.state.userName,
+              this.state.email,
+              this.state.password
+            )
+          }
+          style={styles.continueButton}
+        >
+          <Text>Continuar</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Login")}
-          style={styles.button}
+          style={styles.loginButton}
         >
           <Text>Ir al Login</Text>
         </TouchableOpacity>
-
-
       </View>
     );
   }
@@ -80,27 +93,45 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   heading: {
-    fontSize: 24,
+    fontSize: 32,
+    fontFamily: "Roboto",
+    fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
+    color: "#333",
   },
   input: {
     height: 50,
-    borderColor: "#ccc",
+    borderColor: "#ddd",
     borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    marginBottom: 15,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    fontSize: 16,
   },
-  button: {
-    backgroundColor: "#007bff",
-    padding: 10,
-    borderRadius: 5,
+  continueButton: {
+    backgroundColor: "#28a745",
+    padding: 15,
+    borderRadius: 8,
     alignItems: "center",
-    marginVertical: 10,
+    marginBottom: 15,
+  },
+  loginButton: {
+    backgroundColor: "#007bff",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 20,
   },
   buttonText: {
     color: "#fff",
     fontSize: 16,
+    fontWeight: "600",
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    marginBottom: 10,
   },
 });

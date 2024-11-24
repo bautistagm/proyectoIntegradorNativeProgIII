@@ -39,11 +39,21 @@ export default class Login extends Component {
 
         })
         .catch(error => {
-          console.log('error de login:',error.message), 
+          console.log('Error completo recibido:', error);
+          console.log('Código de error:', error.code);
+          
+          const errorMessages = {
+            'auth/user-not-found': 'El correo ingresado no está registrado.',
+            'auth/wrong-password': 'La contraseña es incorrecta.',
+            'auth/invalid-email': 'El correo es inválido.',
+            'INVALID_LOGIN_CREDENTIALS': 'Los datos ingresados son incorrectos.',
+          };
+        
+          const errorMessage = errorMessages[error.code] || 'Ha ocurrido un error.';
           this.setState({
-                error: error.message
-            });
-        })
+            error: errorMessage
+          });
+        });
     }
 
 }
