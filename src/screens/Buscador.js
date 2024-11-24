@@ -49,6 +49,7 @@ export default class Buscador extends Component {
 
     return (
       <View style={styles.container}>
+          <Text style={styles.appName}>twittMe</Text>
         <Text style={styles.heading}>Buscar Usuarios</Text>
         <TextInput
           style={styles.input}
@@ -79,11 +80,22 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#41C9E2",
   }, 
+  appName: {
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "#921224",
+    position: "absolute",
+    top: 10, 
+    left: 0,
+    right: 0,
+    textAlign: "center", 
+  },
   heading: {
     fontSize: 28,
     fontWeight: "bold",
     color: "#fff", 
     marginBottom: 20,
+    marginTop: 80,
     textAlign: "center",
   },
   input: {

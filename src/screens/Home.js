@@ -21,7 +21,7 @@ export default class Home extends Component {
 
   componentDidMount() {
     db.collection('posts')
-      .orderBy('createdAt', 'desc') // fechas ordenado
+      .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
         let posts = [];
         snapshot.forEach((doc) => {
@@ -43,6 +43,7 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={styles.appName}>twittMe</Text>
         <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={() => this.handleLogout()}>
           <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
@@ -55,10 +56,6 @@ export default class Home extends Component {
           )}
 
         />
-
-
-
-
       </View>
     );
   }
@@ -73,11 +70,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#41C9E2',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
+  appName: {
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "#921224",
   },
   button: {
     backgroundColor: '#F95454',
@@ -96,8 +92,8 @@ const styles = StyleSheet.create({
     color: '#F95454',
     position: 'absolute',
     top: 10,
-    left: 10, 
-    zIndex: 10, 
+    left: 10,
+    zIndex: 10,
   },
 
 });

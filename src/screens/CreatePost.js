@@ -53,6 +53,7 @@ export default class CreatePost extends Component {
   render() {
     return (
       <View style={styles.container}>
+          <Text style={styles.appName}>twittMe</Text>
         <Text style={styles.heading}>Crear Posteo</Text>
         {this.state.error ? (
           <Text style={styles.error}>{this.state.error}</Text>
@@ -82,6 +83,16 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
     backgroundColor: "#41C9E2",
+  },
+  appName: {
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "#921224",
+    position: "absolute",
+    top: 10, 
+    left: 0,
+    right: 0,
+    textAlign: "center", 
   },
   heading: {
     fontSize: 28,

@@ -96,6 +96,7 @@ export default class Profile extends Component {
   
     return (
       <View style={styles.container}>
+        <Text style={styles.appName}>twittMe</Text>
         <Text style={styles.heading}>Perfil del usuario</Text>
         <Text style={styles.text}>Nombre de usuario: {currentUser.displayName || "No definido"}</Text>
         <Text style={styles.text}>Email: {currentUser.email}</Text>
@@ -135,6 +136,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
+  },
+  appName: {
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "#921224",
+    position: "absolute",
+    top: 10, 
+    left: 0,
+    right: 0,
+    textAlign: "center", 
   },
   text: {
     fontSize: 16,

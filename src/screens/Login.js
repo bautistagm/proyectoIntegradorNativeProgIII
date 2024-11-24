@@ -1,54 +1,54 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import {auth} from '../firebase/config'
+import { auth } from '../firebase/config'
 
 export default class Login extends Component {
   constructor() {
-      super()
-      this.state = {
-          email: '',
-          password: '',
-          error:'',
-      }
+    super()
+    this.state = {
+      email: '',
+      password: '',
+      error: '',
+    }
   }
-  login(){
+  login() {
 
-    const {email,password} = this.state;
+    const { email, password } = this.state;
 
-    if (email === ''){
-        this.setState({
-            error:'El mail es obligatorio!'
-        })
-    }  else if (password === ''){
-        this.setState({
-            error:'La contraseña es obligatoria!'
-        })
+    if (email === '') {
+      this.setState({
+        error: 'El mail es obligatorio!'
+      })
+    } else if (password === '') {
+      this.setState({
+        error: 'La contraseña es obligatoria!'
+      })
     } else {
-        auth.signInWithEmailAndPassword(email, password)
-        .then( response => {
-            console.log('Login exitoso', response);
+      auth.signInWithEmailAndPassword(email, password)
+        .then(response => {
+          console.log('Login exitoso', response);
 
-            this.setState({
-                email: '',
-                password: '',
-                error: ''
-            });
+          this.setState({
+            email: '',
+            password: '',
+            error: ''
+          });
 
-            //redigirimos al home si tood esta bien
-            this.props.navigation.navigate('Tabnav');
+          
+          this.props.navigation.navigate('Tabnav');
 
         })
         .catch(error => {
           console.log('Error completo recibido:', error);
           console.log('Código de error:', error.code);
-          
+
           const errorMessages = {
             'auth/user-not-found': 'El correo ingresado no está registrado.',
             'auth/wrong-password': 'La contraseña es incorrecta.',
             'auth/invalid-email': 'El correo es inválido.',
             'INVALID_LOGIN_CREDENTIALS': 'Los datos ingresados son incorrectos.',
           };
-        
+
           const errorMessage = errorMessages[error.code] || 'Ha ocurrido un error.';
           this.setState({
             error: errorMessage
@@ -56,28 +56,28 @@ export default class Login extends Component {
         });
     }
 
-}
-
-  componentDidMount(){  //falta pulirlo, Redirigir al usuario a la home del sitio.
-       auth.onAuthStateChanged( user => {
-          if(user){
-            console.log("Usuario logueado:", user)
-              this.props.navigation.navigate('Tabnav')
-          }
-          console.log(user)
-      })
   }
 
-  
+  componentDidMount() {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        console.log("Usuario logueado:", user)
+        this.props.navigation.navigate('Tabnav')
+      }
+      console.log(user)
+    })
+  }
+
+
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
+        <Text style={styles.heading}>Login</Text>
 
         <TextInput
           keyboardType='email-address'
-          placeholder='Email'
+          placeholder='Ingrese su email'
           onChangeText={text => this.setState({ email: text })}
           value={this.state.email}
           style={styles.input}
@@ -85,14 +85,14 @@ export default class Login extends Component {
 
         <TextInput
           keyboardType='default'
-          placeholder='Password'
+          placeholder='Ingrese su contrasena'
           secureTextEntry={true}
           onChangeText={text => this.setState({ password: text })}
           value={this.state.password}
           style={styles.input}
         />
 
-        {this.state.error ? <Text style={styles.errorText}>{this.state.error}</Text> : null}  
+        {this.state.error ? <Text style={styles.errorText}>{this.state.error}</Text> : null}
 
         <TouchableOpacity onPress={() => this.login()} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
@@ -102,9 +102,6 @@ export default class Login extends Component {
           <Text style={styles.linkText}>¿Todavia no tenes cuenta? Registrate aca!</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
-          <Text style={styles.linkText}>Home</Text>
-        </TouchableOpacity>
 
       </View>
     );
@@ -116,34 +113,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: 20,
   },
-  title: {
-    fontSize: 24,
+  heading: {
+    fontSize: 32,
+    fontFamily: "Roboto",
+    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
+    color: "#333",
   },
   input: {
     height: 50,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+    borderColor: "#ddd",
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderStyle: 'solid',
-    borderRadius: 6,
-    marginVertical: 10,
+    marginBottom: 15,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    fontSize: 16,
   },
   button: {
-    backgroundColor: '#28a745',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    alignItems: 'center',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#28a745',
+    backgroundColor: "#007bff",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 20,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
+    fontWeight: "600",
+    fontFamily: "Times new roman",
   },
   linkText: {
     marginTop: 10,

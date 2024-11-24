@@ -74,13 +74,13 @@ export default class Register extends Component {
           }
           style={styles.continueButton}
         >
-          <Text>Continuar</Text>
+          <Text style={styles.buttonText}>Continuar</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Login")}
           style={styles.loginButton}
         >
-          <Text>Ir al Login</Text>
+          <Text style={styles.buttonText}>Ir al Login</Text>
         </TouchableOpacity>
       </View>
     );
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+    fontFamily: "Times new roman",
   },
   errorText: {
     color: "red",
