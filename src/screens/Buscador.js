@@ -49,6 +49,7 @@ export default class Buscador extends Component {
 
     return (
       <View style={styles.container}>
+        <Text style={styles.heading}>Buscar Usuarios</Text>
         <TextInput
           style={styles.input}
           placeholder="Buscar por email"
@@ -76,14 +77,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#41C9E2",
+  }, 
+  heading: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#fff", 
+    marginBottom: 20,
+    textAlign: "center",
   },
   input: {
     height: 50,
-    borderColor: "#ccc",
+    borderColor: "#fff",
     borderWidth: 1,
+    backgroundColor: "#ffffff90", 
     borderRadius: 8,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    color: "#333",
     marginBottom: 20,
   },
   errorText: {
