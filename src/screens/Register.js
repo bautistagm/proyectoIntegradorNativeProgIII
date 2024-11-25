@@ -21,7 +21,6 @@ export default class Register extends Component {
   }
 
   handleSubmit(nombre, mail, contrasenia) {
-    console.log(this.state.email, this.state.password);
     auth
       .createUserWithEmailAndPassword(mail, contrasenia)
       .then((response) =>

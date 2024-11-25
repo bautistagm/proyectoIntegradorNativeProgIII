@@ -61,10 +61,8 @@ export default class Login extends Component {
   componentDidMount() {
     auth.onAuthStateChanged(user => {
       if (user) {
-        console.log("Usuario logueado:", user)
         this.props.navigation.navigate('Tabnav')
       }
-      console.log(user)
     })
   }
 
