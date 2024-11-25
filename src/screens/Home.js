@@ -5,9 +5,6 @@ import { FlatList } from 'react-native-web';
 import Post from '../components/Post';
 
 
-
-
-
 export default class Home extends Component {
 
   constructor(props) {
