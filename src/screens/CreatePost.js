@@ -61,7 +61,6 @@ export default class CreatePost extends Component {
         <TextInput
           style={styles.input}
           placeholder="Escribe una descripción"
-          multiline
           onChangeText={(text) => this.setState({ description: text })}
           value={this.state.description}
         />

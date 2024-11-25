@@ -25,7 +25,18 @@ export default class Post extends Component {
             .then(() => { this.setState({ likes: this.props.datos.data.likes.length, milike: false }) }
             )
     }
-
+    delete() {
+        db.collection("posts")
+        .doc(this.props.datos.id)
+        .delete()
+        .then(() => {
+            alert("Post eliminado con éxito.");
+        })
+        .catch((error) => {
+            console.error("Error al eliminar el post: ", error);
+        });
+    }
+    
     render() {
 
 
@@ -46,7 +57,11 @@ export default class Post extends Component {
                         <Text>Likear</Text>
 
                     </TouchableOpacity>
-                }
+                } {this.props.datos.data.userEmail === auth.currentUser.email && (
+                    <TouchableOpacity onPress={() => this.delete()} style={styles.deleteButton}>
+                        <Text style={styles.deleteButtonText}>Eliminar</Text>
+                    </TouchableOpacity>
+                )}
             </View>
         );
     }
@@ -85,6 +100,16 @@ const styles = StyleSheet.create({
         backgroundColor: "#ff4d4d",
     },
     likeButtonText: {
+        color: "#fff",
+        fontSize: 16,
+    },
+    deleteButton: {
+        padding: 10,
+        borderRadius: 5,
+        alignItems: "center",
+        backgroundColor: "#d9534f",
+    },
+    deleteButtonText: {
         color: "#fff",
         fontSize: 16,
     },
